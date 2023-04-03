@@ -11,7 +11,12 @@
  
     <script src="./js/marked.js"></script>
 
-
+    <div id="content"></div>
+    <script src="https://cdn.jsdeliver.net/npm/marked/marked.min.js"></script>
+    <script>
+        document.getElementById('content').innerHTML =
+            marked.parse('# Marked in browser\n\nRendered by **Marked**.');
+    </script>
     <script>
         marked.setOptions({
 breaks: true,
@@ -20,6 +25,17 @@ breaks: true,
     const renderer = new marked.Renderer();
     renderer.link = function(href, title, text){
         return '<a target="_blank" href="${href}">$<text>' + '</a>';
+    }
+
+    class App extends React.Component{
+        constructor(props){
+            super(props);
+            this.state = {
+                markdown: placeholder,
+                editorMaximized: false,
+
+            }
+        }
     }
 
         function updatePreview(){
@@ -54,7 +70,7 @@ breaks: true,
                 <h1>Markdown Previewer, GrimDerp's version</h1>
             </div>
         </div>
-I can make it say anything!
+
         <div class="row">
             <div class="col-6 text-center bg-primary">
                 <p>editor placeholder</p>
