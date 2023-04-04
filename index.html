@@ -26,7 +26,7 @@ breaks: true,
     </script>
     <script>
         function updatePreview(){
-            document.getElementById("preview").innerHTML = document.getElementById("editor").value
+            document.getElementById("preview").innerHTML = marked.parse(document.getElementById("editor").value)
         }
     </script>
     <script>
