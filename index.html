@@ -13,6 +13,10 @@
 
     <div id="content"></div>
     <script src="https://cdn.jsdeliver.net/npm/marked/marked.min.js"></script>
+
+</head>
+
+
     <script>
         document.getElementById('content').innerHTML =
             marked.parse('# Marked in a browser\n\nRendered by **Marked**.');
@@ -30,25 +34,16 @@ breaks: true,
         }
     </script>
     <script>
-        document.onload = setDefault(){
-            function.setDefault(){
-                let defaultText ='
-                # 
-                ## markdown previewer
-                //rule of 3
-                // block quote
-                // images can be curled i think but we're going to use href
-                // still not working yet
-                // but also not breaking anything so there's that i guess
-                ';
-                let editorField = ;
+        document.onload = setDefault();
+            function setDefault(){
                 let editorField = document.getElementById("editor")
-                editorField.value = defaultText;
+                editorField.value = "place markdown here"
+            
             }
-        }
+       
     </script>    
     
-</head>
+
   <body onload="setDefault()">
     <div class="container-fluid">
         <div class="row">
