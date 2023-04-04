@@ -8,44 +8,29 @@
 
     <title>Bootstrap demo Markdown Previewer, GrimDerp's Version</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
- 
+    <script src='https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js'></script>
     <script src="./js/marked.js"></script>
 
     <div id="content"></div>
     <script src="https://cdn.jsdeliver.net/npm/marked/marked.min.js"></script>
     <script>
         document.getElementById('content').innerHTML =
-            marked.parse('# Marked in browser\n\nRendered by **Marked**.');
+            marked.parse('# Marked in a browser\n\nRendered by **Marked**.');
     </script>
     <script>
         marked.setOptions({
 breaks: true,
 })
 
-    const renderer = new marked.Renderer();
-    renderer.link = function(href, title, text){
-        return '<a target="_blank" href="${href}">$<text>' + '</a>';
-    }
 
-    class App extends React.Component{
-        constructor(props){
-            super(props);
-            this.state = {
-                markdown: placeholder,
-                editorMaximized: false,
-
-            }
-        }
-    }
-
+    </script>
+    <script>
         function updatePreview(){
-            let previewElement = document.getElementById("preview");
-            let editorValue = document.getElementById("editor").value;
-            let markedUpHTML = marked.parse(editorValue);
-            previewElement.innerHTML = markedUpHTML;
+            document.getElementById("preview").innerHTML = document.getElementById("editor").value
         }
+    </script>
+    <script>
         document.onload = setDefault(){
-            
             function.setDefault(){
                 let defaultText ='
                 # 
@@ -54,14 +39,15 @@ breaks: true,
                 // block quote
                 // images can be curled i think but we're going to use href
                 // still not working yet
-                
+                // but also not breaking anything so there's that i guess
                 ';
                 let editorField = ;
                 let editorField = document.getElementById("editor")
                 editorField.value = defaultText;
             }
         }
-    </script>
+    </script>    
+    
 </head>
   <body onload="setDefault()">
     <div class="container-fluid">
@@ -71,21 +57,18 @@ breaks: true,
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-6 text-center bg-primary">
-                <p>editor placeholder</p>
-                <textarea id="editor" onkeyup="updatePreview()"></textarea>
-            </div>
-            <div class="col-6 text-center bg-danger">
-                <p>markdown preview placeholder</p>
-                
-                <div id="preview"></div>
+    <div class="row">
+        <div class="col-6 text-center bg-primary">
+            <p>editor placeholder</p>
+            <textarea id="editor" onkeyup="updatePreview()"></textarea>
+        </div>
+        <div class="col-6 text-center bg-danger">
+            <p>markdown preview placeholder</p>
+            <div id="preview"></div>
                     <!--required for to pass the tests!-->
                     <!-- marked library: https://cdnjs.com/libraries/marked . plopped into marked.js -->
-                
             </div>
         </div>
-
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
