@@ -38,7 +38,7 @@ console.log(dat)
 //node
 import * as THREE from 'three';
 import { Light } from 'three';
-//import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 //import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 
@@ -48,34 +48,31 @@ const gui = new dat.GUI()
 const world = {
   plane: {
     width: 10,
-    height: 10
-    //
+    height: 10,
+    widthSegments: 10,
+    heightSegments: 10
   }
 }
 
 
 console.log(gui)
 // width gui
-gui.add(world.plane, 'width', 1, 23, ).onChange(() => {
-  planeMesh.geometry.dispose()
-  planeMesh.geometry = new THREE.PlaneGeometry(world.plane.width, world.plane.height, 32, 16)
-  const {array} = planeMesh.geometry.attributes.position
-//gonna adjust the plane's vertices; array length is 363
-for (let i = 0; i < array.length; i +=3) {
-  const x = array[i]
-  const y = array[i + 1]
-  const z = array[i + 2]
-
-  array[i + 2] = z + Math.random()
-  //console.log(array[i])
-}
-  console.log(world.plane.width);
-}
-)
+gui.add(world.plane, 'width', 1, 64, ).onChange(generatePlane)
  //height gui 
-gui.add(world.plane, 'height', 1, 23, ).onChange(() => {
+gui.add(world.plane, 'height', 1, 64, ).onChange(generatePlane)
+  //segments
+gui.add(world.plane, 'widthSegments', 1, 128, ).onChange(generatePlane)  
+gui.add(world.plane, 'heightSegments', 1, 128, ).onChange(generatePlane)  
+
+
+function generatePlane(){
   planeMesh.geometry.dispose()
-  planeMesh.geometry = new THREE.PlaneGeometry(world.plane.height, world.plane.height, 32, 16)
+  planeMesh.geometry = new THREE.PlaneGeometry(
+    world.plane.height, 
+    world.plane.height, 
+    world.plane.widthSegments, 
+    world.plane.heightSegments
+    )
 
   const {array} = planeMesh.geometry.attributes.position
 for (let i = 0; i < array.length; i +=3) {
@@ -85,10 +82,13 @@ for (let i = 0; i < array.length; i +=3) {
 
   array[i + 2] = z + Math.random()
   //console.log(array[i])
-}
+  }
   console.log(world.plane.height);
 }
-)
+
+
+
+
 
 //const controls = new OrbitControls( camera, renderer.domElement );
 //const loader = new GLTFLoader();
@@ -100,9 +100,8 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
    1000
    )
-
 const renderer = new THREE.WebGLRenderer(
-
+    //gonna put something here at some point
    )
 
 /*console.log(scene)
@@ -123,7 +122,7 @@ const material = new THREE.MeshPhongMaterial({ color: 0x00ff00 })
 const mesh = new THREE.Mesh(boxGeometry, material)
 scene.add(mesh)
 */
-
+new OrbitControls(camera, renderer.domElement)
 camera.position.z = 5
 
 const planeGeometry = new THREE.PlaneGeometry(15, 15, 30, 30)
@@ -135,10 +134,14 @@ const planeMaterial = new THREE.MeshPhongMaterial({
 const planeMesh = new THREE.Mesh(planeGeometry, planeMaterial)
 scene.add(planeMesh)
 
+//lighting
 const light = new THREE.DirectionalLight(0xffffff, 1)
 light.position.set(0, 0, 1)
 scene.add(light)
-
+//------------------
+const backLight = new THREE.DirectionalLight(0xffffff, 1)
+light.position.set(0, 0, -1)
+scene.add(backLight)
 
 
 console.log(planeMesh.geometry.attributes.position.array)
