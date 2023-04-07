@@ -71,16 +71,36 @@ scene.add(mesh)
 
 camera.position.z = 5
 
-const planeGeometry = new THREE.PlaneGeometry(5, 5, 10, 10)
-const planeMaterial = new THREE.MeshPhongMaterial({ color: 0xff0000, side: THREE.DoubleSide })
+const planeGeometry = new THREE.PlaneGeometry(5.5, 5.5, 10.5, 10.5)
+const planeMaterial = new THREE.MeshPhongMaterial({
+    color: 0xff0000,
+    side: THREE.DoubleSide,
+    flatShading: true  //THREE.FlatShading
+  })
 const planeMesh = new THREE.Mesh(planeGeometry, planeMaterial)
+scene.add(planeMesh)
 
 const light = new THREE.DirectionalLight(0xffffff, 1)
 light.position.set(0, 0, 1)
-
-scene.add(planeMesh)
 scene.add(light)
-//console.log(planeMesh)
+
+
+
+console.log(planeMesh.geometry.attributes.position.array)
+
+const {array} = planeMesh.geometry.attributes.position
+
+//gonna adjust the plane's vertices; array length is 363
+for (let i = 0; i < array.length; i +=3) {
+  const x = array[i]
+  const y = array[i + 1]
+  const z = array[i + 2]
+
+  array[i + 2] = z + Math.random()
+
+  //console.log(array[i])
+}
+
 
 
 
