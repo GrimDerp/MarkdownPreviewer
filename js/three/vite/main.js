@@ -92,7 +92,10 @@ for (let i = 0; i < array.length; i +=3) {
 
 //const controls = new OrbitControls( camera, renderer.domElement );
 //const loader = new GLTFLoader();
+//cameras & casters
 
+const raycaster = new THREE.Raycaster()
+//console.log(raycaster)
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(
   75, 
@@ -167,9 +170,23 @@ function animate(){
   mesh.rotation.x += 0.031987 * Math.random() +.02
   mesh.rotation.y += 0.0279 * Math.random()
   mesh.position.z += 0.0019 * Math.random()
- // planeMesh.rotation.x += .0279 
+  //planeMesh.rotation.x += .00279 
   
 }
 renderer.render(scene, camera)
 
+//movin stuff around
 animate()
+
+
+const mouse = {
+  x: undefined,
+  y: undefined
+}
+//listeners
+addEventListener('mousemove', (event) => {
+  mouse.x = (event.clientX / innerWidth) * 2 - 1
+  mouse.x = (event.clientY / innerHeight) * 2 + 1
+  //console.log(event.clientY)
+  console.log(mouse)
+})
