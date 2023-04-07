@@ -48,20 +48,49 @@ const gui = new dat.GUI()
 const world = {
   plane: {
     width: 10,
-    
+    height: 10
     //
   }
 }
 
 
 console.log(gui)
+// width gui
+gui.add(world.plane, 'width', 1, 45, ).onChange(() => {
+  planeMesh.geometry.dispose()
+  planeMesh.geometry = new THREE.PlaneGeometry(world.plane.width, 16, 16, 32, 32 * Math.random())
+  const {array} = planeMesh.geometry.attributes.position
+//gonna adjust the plane's vertices; array length is 363
+for (let i = 0; i < array.length; i +=3) {
+  const x = array[i]
+  const y = array[i + 1]
+  const z = array[i + 2]
 
-gui.add(world.plane, 'width', 1, 1000).onChange(() => {
+  array[i + 2] = z + Math.random()
+
+  //console.log(array[i])
+}
   console.log(world.plane.width);
 }
 )
-  console.log(world.plane.width)
+ //height gui 
+gui.add(world.plane, 'height', 1, 45, ).onChange(() => {
+  planeMesh.geometry.dispose()
+  planeMesh.geometry = new THREE.PlaneGeometry(world.plane.height, 16, 16, 32, 32 * Math.random())
+  const {array} = planeMesh.geometry.attributes.position
+//gonna adjust the plane's vertices; array length is 363
+for (let i = 0; i < array.length; i +=3) {
+  const x = array[i]
+  const y = array[i + 1]
+  const z = array[i + 2]
 
+  array[i + 2] = z + Math.random()
+
+  //console.log(array[i])
+}
+  console.log(world.plane.width);
+}
+)
 
 //const controls = new OrbitControls( camera, renderer.domElement );
 //const loader = new GLTFLoader();
@@ -90,15 +119,16 @@ renderer.setSize(innerWidth, innerHeight)
 renderer.setPixelRatio(devicePixelRatio)
 document.body.appendChild(renderer.domElement)
 
-/*const boxGeometry = new THREE.BoxGeometry(1, 1, 1)
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+/*
+const boxGeometry = new THREE.BoxGeometry(1, 1, 1)
+const material = new THREE.MeshPhongMaterial({ color: 0x00ff00 })
 const mesh = new THREE.Mesh(boxGeometry, material)
 scene.add(mesh)
 */
 
 camera.position.z = 5
 
-const planeGeometry = new THREE.PlaneGeometry(5.5, 5.5, 10.5, 10.5)
+const planeGeometry = new THREE.PlaneGeometry(15, 15, 30, 30)
 const planeMaterial = new THREE.MeshPhongMaterial({
     color: 0xff0000,
     side: THREE.DoubleSide,
@@ -116,7 +146,6 @@ scene.add(light)
 console.log(planeMesh.geometry.attributes.position.array)
 
 const {array} = planeMesh.geometry.attributes.position
-
 //gonna adjust the plane's vertices; array length is 363
 for (let i = 0; i < array.length; i +=3) {
   const x = array[i]
@@ -134,9 +163,11 @@ for (let i = 0; i < array.length; i +=3) {
 function animate(){
   requestAnimationFrame(animate)
   renderer.render(scene, camera)
-  //mesh.rotation.x += 0.01
-  //mesh.rotation.y += 0.01
-  planeMesh.rotation.x += 0.01
+  mesh.rotation.x += 0.031987 * Math.random() +.02
+  mesh.rotation.y += 0.0279 * Math.random()
+  mesh.position.z += 0.0019 * Math.random()
+ // planeMesh.rotation.x += .0279 
+  
 }
 renderer.render(scene, camera)
 
