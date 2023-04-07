@@ -56,9 +56,9 @@ const world = {
 
 console.log(gui)
 // width gui
-gui.add(world.plane, 'width', 1, 45, ).onChange(() => {
+gui.add(world.plane, 'width', 1, 23, ).onChange(() => {
   planeMesh.geometry.dispose()
-  planeMesh.geometry = new THREE.PlaneGeometry(world.plane.width, 16, 16, 32, 32 * Math.random())
+  planeMesh.geometry = new THREE.PlaneGeometry(world.plane.width, world.plane.height, 32, 16)
   const {array} = planeMesh.geometry.attributes.position
 //gonna adjust the plane's vertices; array length is 363
 for (let i = 0; i < array.length; i +=3) {
@@ -67,28 +67,26 @@ for (let i = 0; i < array.length; i +=3) {
   const z = array[i + 2]
 
   array[i + 2] = z + Math.random()
-
   //console.log(array[i])
 }
   console.log(world.plane.width);
 }
 )
  //height gui 
-gui.add(world.plane, 'height', 1, 45, ).onChange(() => {
+gui.add(world.plane, 'height', 1, 23, ).onChange(() => {
   planeMesh.geometry.dispose()
-  planeMesh.geometry = new THREE.PlaneGeometry(world.plane.height, 16, 16, 32, 32 * Math.random())
+  planeMesh.geometry = new THREE.PlaneGeometry(world.plane.height, world.plane.height, 32, 16)
+
   const {array} = planeMesh.geometry.attributes.position
-//gonna adjust the plane's vertices; array length is 363
 for (let i = 0; i < array.length; i +=3) {
   const x = array[i]
   const y = array[i + 1]
   const z = array[i + 2]
 
   array[i + 2] = z + Math.random()
-
   //console.log(array[i])
 }
-  console.log(world.plane.width);
+  console.log(world.plane.height);
 }
 )
 
