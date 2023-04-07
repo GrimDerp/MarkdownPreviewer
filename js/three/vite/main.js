@@ -1,3 +1,7 @@
+//howdy
+
+//// @ts-check
+
 /*import './style.css'
 import javascriptLogo from './javascript.svg'
 import viteLogo from '/vite.svg'
@@ -29,12 +33,35 @@ import { setupCounter } from './counter.js'
 //import * as THREE from 'https://unpkg.com/three@0.151.3/build/three.module.js'
 // "three/addons/": "https://unpkg.com/three@<0.151.3>/examples/jsm/"
 
-
+import * as dat from 'dat.gui'
+console.log(dat)
 //node
 import * as THREE from 'three';
 import { Light } from 'three';
 //import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 //import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+
+
+
+const gui = new dat.GUI()
+const world = {
+  plane: {
+    width: 10,
+    
+    //
+  }
+}
+
+
+console.log(gui)
+
+gui.add(world.plane, 'width', 1, 1000).onChange(() => {
+  console.log(world.plane.width);
+}
+)
+  console.log(world.plane.width)
+
 
 //const controls = new OrbitControls( camera, renderer.domElement );
 //const loader = new GLTFLoader();
