@@ -122,8 +122,6 @@ planeMesh.geometry.setAttribute(
 )
 //}  ?
 
-
-
 starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(
   starVertices, 3))
 
@@ -258,7 +256,6 @@ document.querySelector('#button1')?.addEventListener('click', (e) => {
   gsap.to('#container', {
     opacity: 0,
   })
-})
 
 gsap.to(camera.position, {
   z: 25,
@@ -277,7 +274,10 @@ gsap.to(camera.position, {
   duration: 1.5,
   delay: 2
 })
+})
+
 
 addEventListener('resize', () => {
-  console.log('resize')
+  camera.aspect
+  renderer.setSize(innerWidth, innerHeight)
 })
