@@ -1,47 +1,20 @@
 // howdy yall
 //@ts-check
 import gsap from 'gsap'
-import * as dat from 'dat.gui';
 import * as THREE from 'three';
-import { Light } from 'three';
-//says its broken but seems to work, i dunno
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-
-//need three scene, then world
-const scene = new THREE.Scene()
-
-//cameras & casters
-const raycaster = new THREE.Raycaster()
-
-const camera = new THREE.PerspectiveCamera(
-  75, 
-  innerWidth / innerHeight,
-  0.1,
-  1000
-  )
-
-
-const renderer = new THREE.WebGLRenderer()
-renderer.setSize(innerWidth, innerHeight)
-renderer.setPixelRatio(devicePixelRatio)
-document.body.appendChild(renderer.domElement)
-
-renderer.render(scene, camera)
-
-new OrbitControls(camera, renderer.domElement)
-camera.position.z = 5
-
+import * as dat from 'dat.gui';
+import { LoopOnce } from 'three';
+//import { Light } from 'three';
 const gui = new dat.GUI()
 const world = {
   plane: {
-    width: 19,
-    height: 19,
-    widthSegments: 17,
-    heightSegments: 17
+    width: 400,
+    height: 400,
+    widthSegments: 128,
+    heightSegments: 128
   }
 }
-
-//gui action?
 // width gui
 gui.add(world.plane, 'width', 1, 64, ).onChange(generatePlane)
  //height gui 
@@ -50,8 +23,6 @@ gui.add(world.plane, 'height', 1, 64, ).onChange(generatePlane)
 gui.add(world.plane, 'widthSegments', 1, 128, ).onChange(generatePlane)  
 gui.add(world.plane, 'heightSegments', 1, 128, ).onChange(generatePlane)  
 
-
-//action?
 function generatePlane(){
   planeMesh.geometry.dispose()
   planeMesh.geometry = new THREE.PlaneGeometry(
@@ -61,17 +32,6 @@ function generatePlane(){
     world.plane.heightSegments
     )
 }
-
-const planeGeometry = new THREE.PlaneGeometry(world.plane.width, world.plane.height, world.plane.widthSegments, world.plane.heightSegments, 19, 19, 17, 17)
-const planeMaterial = new THREE.MeshPhongMaterial({
-    //color: 0xff0000,
-    side: THREE.DoubleSide,
-    flatShading: true,  //THREE.FlatShading
-    vertexColors: true
-  })
-const planeMesh = new THREE.Mesh(planeGeometry, planeMaterial)
-scene.add(planeMesh)
-
 //vertice position randomization
 const {array} = planeMesh.geometry.attributes.position
 const randomValues = []
@@ -81,34 +41,95 @@ for (let i = 0; i < array.length; i ++) {
   const y = array[i + 1]
   const z = array[i + 2]
   
-  array[i] = x + (Math.random() -0.5)
-  array[i + 1] = y + (Math.random() -0.5)
-  array[i + 2] = z + Math.random()
+  array[i] = x + (Math.random() -0.5) * 3
+  array[i + 1] = y + (Math.random() -0.5) * 3
+  array[i + 2] = z + (Math.random() -0.5) * 3
   }
-  randomValues.push(Math.random() - 0.5)
+  randomValues.push(Math.random() * Math.PI * 2)
 } 
 
 planeMesh.geometry.attributes.position.randomValues = randomValues
 planeMesh.geometry.attributes.position.originalPosition =
 planeMesh.geometry.attributes.position.array
+//colorsnext
 
-//color attribute addition
 const colors = []
 for (let i = 0; i < planeMesh.geometry.attributes.position.count; i++){
-  colors.push(0, .19, 0.4)
+  colors.push(0, 0.19, 0.4)
 }
+
 planeMesh.geometry.setAttribute(
-  'color', 
-  new THREE.BufferAttribute(new Float32Array(colors), 3)
+  'color',
+  new THREE.BufferAttribute(new Float32Array(colors),3)
 )
+//}  ?
+//cameras & casters
+const raycaster = new THREE.Raycaster()
+const scene = new THREE.Scene()
+const camera = new THREE.PerspectiveCamera(
+  75, 
+  innerWidth / innerHeight,
+  0.1,
+  1000
+  )
+
+const renderer = new THREE.WebGLRenderer()
+
+renderer.setSize(innerWidth, innerHeight)
+renderer.setPixelRatio(devicePixelRatio)
+document.body.appendChild(renderer.domElement)
+
+
+new OrbitControls(camera, renderer.domElement)
+camera.position.z = 50
+
+const planeGeometry = new THREE.PlaneGeometry(
+  world.plane.width,
+  world.plane.height,
+  world.plane.widthSegments,
+  world.plane.heightSegments
+  )
+const planeMaterial = new THREE.MeshPhongMaterial({
+    //color: 0xff0000,
+    side: THREE.DoubleSide,
+    flatShading: true,  //THREE.FlatShading
+    vertexColors: true
+  })
+const planeMesh = new THREE.Mesh(planeGeometry, planeMaterial)
+scene.add(planeMesh)
+generatePlane()
+
 //lighting
 const light = new THREE.DirectionalLight(0xffffff, 1)
-light.position.set(0, 0, 1)
+light.position.set(0, 1, 1)
 scene.add(light)
 
 const backLight = new THREE.DirectionalLight(0xffffff, 1)
-light.position.set(0, 0, -1)
+light.position.set(0, -1, -1)
 scene.add(backLight)
+
+const starGeometry = new THREE.BufferGeometry()
+const starMaterial = new THREE.PointsMaterial({
+  color: 0xffffff
+})
+
+const starVertices = []
+for (let i = 0; i < 11000; i++) {
+  const x = (Math.random() - .05) * 2000
+  const y = (Math.random() - .05) * 2000
+  const z = (Math.random() - .05) * 2000
+  starVertices.push(x, y, z)
+}
+
+starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(
+  starVertices, 3))
+
+const stars = new THREE.Points(starGeometry, starMaterial)
+scene.add()  
+
+console.log(starVertices);
+console.log(starGeometry);
+console.log(starMaterial);
 
 const mouse = {
   x: undefined,
@@ -132,10 +153,10 @@ for (let i = 0; i < array.length; i+=3) {
   const element = array[i];
   // x
   array[i] = originalPosition[i] + 
-    Math.cos(frame + randomValues[i]) * 0.003
-// y
+    Math.cos(frame + randomValues[i]) * 0.03
+  // y
   array[i + 1] = originalPosition[i +1] + 
-    Math.sin(frame + randomValues[i + 1]) * 0.003
+    Math.sin(frame + randomValues[i + 1]) * 0.03
 }
 planeMesh.geometry.attributes.position.needsUpdate = true
 
@@ -145,8 +166,8 @@ if (intersects.length > 0) {
 
     //vertice 1
     color.setX(intersects[0].face.a, 0.1)
-    color.setY(intersects[0].face.a, 0.5)
-    color.setZ(intersects[0].face.a, 1)
+    color.setY(intersects[0].face.a, 0.3)
+    color.setZ(intersects[0].face.a, 0.3)
     //vertice 2
     color.setX(intersects[0].face.b, 0.1)
     color.setY(intersects[0].face.b, 0.5)
@@ -196,8 +217,11 @@ if (intersects.length > 0) {
       }
     })
   }
+
+  stars.rotation.x += 0.0001
 }
 
+renderer.render(scene, camera)
 
 animate()
 
