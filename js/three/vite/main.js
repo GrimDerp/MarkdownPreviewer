@@ -76,6 +76,15 @@ for (let i = 0; i < 11000; i++) {
   const z = (Math.random() - .05) * 2000
   starVertices.push(x, y, z)
 }
+starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(
+  starVertices, 3))
+
+const stars = new THREE.Points(starGeometry, starMaterial)
+scene.add()  
+
+console.log(starVertices);
+console.log(starGeometry);
+console.log(starMaterial);
 
 new OrbitControls(camera, renderer.domElement)
 camera.position.z = 50
@@ -121,16 +130,6 @@ planeMesh.geometry.setAttribute(
   new THREE.BufferAttribute(new Float32Array(colors),3)
 )
 //}  ?
-
-starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(
-  starVertices, 3))
-
-const stars = new THREE.Points(starGeometry, starMaterial)
-scene.add()  
-
-console.log(starVertices);
-console.log(starGeometry);
-console.log(starMaterial);
 
 const mouse = {
   x: undefined,
@@ -250,7 +249,7 @@ gsap.to('#button1', {
   y: 0,
   ease: 'expo'
 })
-
+//button1
 document.querySelector('#button1')?.addEventListener('click', (e) => {
   e.preventDefault()
   gsap.to('#container', {
@@ -272,12 +271,43 @@ gsap.to(camera.position, {
   y: 1025,
   ease: 'power3.in',
   duration: 1.5,
-  delay: 2
+  delay: 2,
+  onComplete: () => {
+    window.location = 'https://www.bchoatedesign.com/home/case-studies'
+  }
 })
+})
+//button2
+document.querySelector('#button2')?.addEventListener('click', (e) => {
+  e.preventDefault()
+  gsap.to('#container', {
+    opacity: 0,
+  })
+
+gsap.to(camera.position, {
+  z: 25,
+  ease: 'power3.inOut',
+  duration: 2
+})
+gsap.to(camera.rotation, {
+  x: 1.57,
+  ease: 'power3.inOut',
+  duration: 2
 })
 
+gsap.to(camera.position, {
+  y: 1025,
+  ease: 'power3.in',
+  duration: 1.5,
+  delay: 2,
+  onComplete: () => {
+    window.location = 'https://www.bchoatedesign.com/'
+  }
+})
+})
 
 addEventListener('resize', () => {
-  camera.aspect
+  camera.aspect = innerWidth / innerHeight
+  camera.updateProjectionMatrix()
   renderer.setSize(innerWidth, innerHeight)
 })
